@@ -25,32 +25,79 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-from clearpath_config.platform.types.attachment import BaseAttachment
 from clearpath_config.common.types.accessory import Accessory
+from clearpath_config.mounts.types.mount import BaseMount
 from typing import List
 
 
-class Structure(BaseAttachment):
-    ATTACHMENT_MODEL = "structure"
-    ARCH_300 = "sensor_arch_300"
-    ARCH_510 = "sensor_arch_510"
-    DEFAULT = ARCH_300
-    MODELS = [DEFAULT, ARCH_300, ARCH_510]
+class Post(BaseMount):
+    MOUNT_MODEL = "post"
+    HEIGHT = 0.075
+    SPACING = 0.080
+    SINGLE = "single"
+    DUAL = "dual"
+    QUAD = "quad"
+    MODELS = [SINGLE, DUAL, QUAD]
 
     def __init__(
             self,
-            name: str = ATTACHMENT_MODEL,
-            enabled: bool = BaseAttachment.ENABLED,
-            model: str = DEFAULT,
+            idx: int = None,
+            name: str = None,
+            model: str = SINGLE,
+            height: float = HEIGHT,
+            spacing: float = SPACING,
             parent: str = Accessory.PARENT,
             xyz: List[float] = Accessory.XYZ,
             rpy: List[float] = Accessory.RPY
             ) -> None:
-        super().__init__(
-            name,
-            enabled,
-            model,
-            parent,
-            xyz,
-            rpy
-        )
+        self.model = model
+        self.height = height
+        self.spacing = spacing
+        super().__init__(idx, name, parent, xyz, rpy)
+
+    def to_dict(self) -> dict:
+        d = super().to_dict()
+        d['model'] = self.get_model()
+        d['height'] = self.height
+        if self.get_model() != self.SINGLE:
+            d['spacing'] = self.spacing
+        return d
+
+    def from_dict(self, d: dict) -> None:
+        super().from_dict(d)
+        if 'model' in d:
+            self.set_model(d['model'])
+        if 'height' in d:
+            self.height = d['height']
+        if 'spacing' in d:
+            self.spacing = d['spacing']
+
+    def get_model(self) -> str:
+        return self.model
+
+    def set_model(self, model: str) -> None:
+        assert model in self.MODELS, " ".join([
+            "Unexpected Post model '%s'," % model,
+            "it must be one of the following: %s" % self.MODELS
+        ])
+        self.model = model
+
+    @property
+    def height(self) -> float:
+        return self._height
+
+    @height.setter
+    def height(self, height: float) -> None:
+        assert height > 0, (
+            "Height must be positive 'float'")
+        self._height = height
+
+    @property
+    def spacing(self) -> float:
+        return self._spacing
+
+    @spacing.setter
+    def spacing(self, spacing: float) -> None:
+        assert spacing > 0, (
+            "Spacing must be positive 'float'")
+        self._spacing = spacing

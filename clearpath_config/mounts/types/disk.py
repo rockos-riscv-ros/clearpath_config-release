@@ -25,32 +25,20 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-from clearpath_config.platform.types.attachment import BaseAttachment
 from clearpath_config.common.types.accessory import Accessory
+from clearpath_config.mounts.types.mount import BaseMount
 from typing import List
 
 
-class Structure(BaseAttachment):
-    ATTACHMENT_MODEL = "structure"
-    ARCH_300 = "sensor_arch_300"
-    ARCH_510 = "sensor_arch_510"
-    DEFAULT = ARCH_300
-    MODELS = [DEFAULT, ARCH_300, ARCH_510]
+class Disk(BaseMount):
+    MOUNT_MODEL = "disk"
 
     def __init__(
             self,
-            name: str = ATTACHMENT_MODEL,
-            enabled: bool = BaseAttachment.ENABLED,
-            model: str = DEFAULT,
+            idx: int = None,
+            name: str = None,
             parent: str = Accessory.PARENT,
             xyz: List[float] = Accessory.XYZ,
             rpy: List[float] = Accessory.RPY
             ) -> None:
-        super().__init__(
-            name,
-            enabled,
-            model,
-            parent,
-            xyz,
-            rpy
-        )
+        super().__init__(idx, name, parent, xyz, rpy)
