@@ -2,6 +2,12 @@
 Changelog for package clearpath_config
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.4 (2024-01-22)
+------------------
+* Install the W200 samples.
+* Fixed j100 and w200 laser sample
+* Contributors: Roni Kreinin, Tony Baltovski
+
 0.2.3 (2024-01-10)
 ------------------
 * Give option to get topic without namespace
