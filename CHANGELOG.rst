@@ -2,6 +2,12 @@
 Changelog for package clearpath_config
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.2.10 (2024-07-22)
+-------------------
+* Updated Microstrain link parameter
+* Updated Realsense parameters
+* Contributors: Luis Camero
+
 0.2.9 (2024-05-28)
 ------------------
 * Added Zed to configuration
