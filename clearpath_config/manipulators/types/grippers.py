@@ -1,7 +1,7 @@
 # Software License Agreement (BSD)
 #
 # @author    Luis Camero <lcamero@clearpathrobotics.com>
-# @copyright (c) 2023, Clearpath Robotics, Inc., All rights reserved.
+# @copyright (c) 2024, Clearpath Robotics, Inc., All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -25,36 +25,46 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-from clearpath_config.common.types.accessory import Accessory
-from clearpath_config.common.types.platform import Platform
-from clearpath_config.platform.types.attachment import BaseAttachment, PlatformAttachment
-from clearpath_config.platform.attachments.dd100 import DD100TopPlate
-from typing import List
+from clearpath_config.manipulators.types.manipulator import BaseManipulator
 
 
-class DO100TopPlate(DD100TopPlate):
-    PLATFORM = Platform.DO100
-    ATTACHMENT_MODEL = "%s.top_plate" % PLATFORM
-
-    def __init__(
-            self,
-            name: str = ATTACHMENT_MODEL,
-            model: str = DD100TopPlate.PACS,
-            enabled: bool = BaseAttachment.ENABLED,
-            height: float = DD100TopPlate.HEIGHT,
-            parent: str = DD100TopPlate.PARENT,
-            xyz: List[float] = Accessory.XYZ,
-            rpy: List[float] = Accessory.RPY
-            ) -> None:
-        super().__init__(name, model, enabled, height, parent, xyz, rpy)
+class BaseGripper(BaseManipulator):
+    MANIPULATOR_MODEL = "base"
+    MANIPULATOR_TYPE = "gripper"
 
 
-# DO100 Attachments
-class DO100Attachment(PlatformAttachment):
-    PLATFORM = Platform.DO100
-    # Top Plates
-    TOP_PLATE = DO100TopPlate.ATTACHMENT_MODEL
+class Kinova2FLite(BaseGripper):
+    MANIPULATOR_MODEL = "kinova_2f_lite"
 
-    TYPES = {
-        TOP_PLATE: DO100TopPlate,
+
+class Robotiq2F85(BaseGripper):
+    MANIPULATOR_MODEL = "robotiq_2f_85"
+
+
+class Robotiq2F140(BaseGripper):
+    MANIPULATOR_MODEL = "robotiq_2f_140"
+
+
+class Gripper():
+    KINOVA_2F_LITE = Kinova2FLite.MANIPULATOR_MODEL
+    ROBOTIQ_2F_140 = Robotiq2F140.MANIPULATOR_MODEL
+    ROBOTIQ_2F_85 = Robotiq2F85.MANIPULATOR_MODEL
+
+    MODEL = {
+        KINOVA_2F_LITE: Kinova2FLite,
+        ROBOTIQ_2F_140: Robotiq2F140,
+        ROBOTIQ_2F_85: Robotiq2F85,
     }
+
+    @classmethod
+    def assert_model(cls, model: str) -> None:
+        assert model in cls.MODEL, (
+            "Gripper model '%s' must be one of: '%s'" % (
+                model,
+                cls.MODEL.keys()
+            )
+        )
+
+    def __new__(cls, model: str) -> BaseGripper:
+        cls.assert_model(model)
+        return cls.MODEL[model]()
