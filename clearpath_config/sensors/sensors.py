@@ -36,6 +36,7 @@ from clearpath_config.sensors.types.cameras import (
     FlirBlackfly,
     IntelRealsense,
     StereolabsZed,
+    LuxonisOAKD,
 )
 from clearpath_config.sensors.types.gps import (
     BaseGPS,
@@ -49,6 +50,7 @@ from clearpath_config.sensors.types.imu import (
     BaseIMU,
     Microstrain,
     CHRoboticsUM6,
+    PhidgetsSpatial,
     RedshiftUM7,
 )
 from clearpath_config.sensors.types.lidars_2d import (
@@ -67,10 +69,12 @@ from typing import List
 class InertialMeasurementUnit():
     MICROSTRAIN_IMU = Microstrain.SENSOR_MODEL
     CHROBOTICS_UM6 = CHRoboticsUM6.SENSOR_MODEL
+    PHIDGETS_SPATIAL = PhidgetsSpatial.SENSOR_MODEL
     REDSHIFT_UM7 = RedshiftUM7.SENSOR_MODEL
     MODEL = {
         MICROSTRAIN_IMU: Microstrain,
         CHROBOTICS_UM6: CHRoboticsUM6,
+        PHIDGETS_SPATIAL: PhidgetsSpatial,
         REDSHIFT_UM7: RedshiftUM7,
     }
 
@@ -92,11 +96,13 @@ class Camera():
     FLIR_BLACKFLY = FlirBlackfly.SENSOR_MODEL
     INTEL_REALSENSE = IntelRealsense.SENSOR_MODEL
     STEREOLABS_ZED = StereolabsZed.SENSOR_MODEL
+    LUXONIS_OAKD = LuxonisOAKD.SENSOR_MODEL
 
     MODEL = {
         FLIR_BLACKFLY: FlirBlackfly,
         INTEL_REALSENSE: IntelRealsense,
         STEREOLABS_ZED: StereolabsZed,
+        LUXONIS_OAKD: LuxonisOAKD,
     }
 
     @classmethod
